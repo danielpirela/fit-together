@@ -6,11 +6,7 @@
     "useIgnoreFile": true
   },
   "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": "on"
-      }
-    }
+    "enabled": false
   },
   "linter": {
     "enabled": true,
@@ -19,7 +15,9 @@
       "correctness": {
         "noUnusedVariables": "warn",
         "noUnusedImports": "warn",
-        "noUnusedFunctionParameters": "warn"
+        "noUnusedFunctionParameters": "warn",
+        "useExhaustiveDependencies": "off",
+        "noDeprecation": "off"
       },
       "style": {
         "noNonNullAssertion": "off"
@@ -46,7 +44,8 @@
       "arrowParentheses": "always",
       "bracketSameLine": false,
       "bracketSpacing": true,
-      "semicolons": "always"
+      "semicolons": "asNeeded",
+      "quoteStyle": "single"
     }
   },
   "json": {

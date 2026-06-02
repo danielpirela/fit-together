@@ -1,9 +1,9 @@
-import "react-native-reanimated";
-import "react-native-worklets";
-import "@tanstack/react-query";
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import "../src/global.css";
+import 'react-native-reanimated'
+import 'react-native-worklets'
+import '@tanstack/react-query'
+import { Stack } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import '../src/global.css'
 
 export default function RootLayout() {
   return (
@@ -12,23 +12,25 @@ export default function RootLayout() {
       <Stack
         screenOptions={{
           headerStyle: {
-            backgroundColor: "#FFFFFF",
+            backgroundColor: '#FFFFFF',
           },
-          headerTintColor: "#000000",
+          headerTintColor: '#000000',
           headerTitleStyle: {
-            fontWeight: "600",
+            fontWeight: '600',
           },
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="auth" options={{ headerShown: false }} />
+        <Stack.Screen name="couple" options={{ headerShown: false }} />
         <Stack.Screen
           name="index"
           options={{
-            title: "Together Habit Tracking",
+            title: 'Together Habit Tracking',
           }}
         />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
       </Stack>
     </>
-  );
+  )
 }
