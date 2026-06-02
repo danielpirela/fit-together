@@ -3,10 +3,14 @@
   "compilerOptions": {
     "strict": true,
     "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"],
+      "@/core/*": ["src/core/*"],
+      "@/shared/*": ["src/shared/*"],
+      "@/features/*": ["src/features/*"]
     }
   },
   "include": [
@@ -14,6 +18,9 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
-  ]
+    "nativewind-env.d.ts",
+    "global.d.ts",
+    "src/**/*"
+  ],
+  "exclude": ["node_modules", "android", "ios"]
 }

@@ -5,6 +5,6 @@ import { withNativewind } from "nativewind/metro";
 const config = getDefaultConfig(__dirname);
 
 module.exports = withNativewind(config, {
-  inlineVariables: false,
-  globalClassNamePolyfill: false,
+	inlineVariables: false,
+	globalClassNamePolyfill: false,
 });
