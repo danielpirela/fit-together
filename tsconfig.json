@@ -4,13 +4,17 @@
     "strict": true,
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
-    "ignoreDeprecations": "6.0",
+    "module": "esnext",
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
-      "@/*": ["./*"],
-      "@/core/*": ["src/core/*"],
-      "@/shared/*": ["src/shared/*"],
-      "@/features/*": ["src/features/*"]
+      "@/components/*": ["./components/*"],
+      "@/constants/*": ["./constants/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@/stores/*": ["./src/stores/*"],
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -19,8 +23,7 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts",
-    "global.d.ts",
-    "src/**/*"
+    "global.d.ts"
   ],
   "exclude": ["node_modules", "android", "ios"]
 }

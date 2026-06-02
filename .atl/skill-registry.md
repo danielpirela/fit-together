@@ -6,6 +6,7 @@ Last updated: 2026-06-02
 
 ## Sources scanned
 
+- /home/daniel/.pi/agent/skills
 - /home/daniel/.config/agents/skills
 - /home/daniel/.agents/skills
 - /home/daniel/.config/opencode/skills
