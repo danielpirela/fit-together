@@ -1,13 +1,13 @@
 // Habit Grid Cell Component - React Native
 // Shows completion status with diagonal split or solid color
 
-import { StyleSheet, View } from "react-native";
-import type { CellStatus } from "@/core/entities";
-import { Colors } from "@/shared/constants/theme";
+import { StyleSheet, View } from 'react-native'
+import type { CellStatus } from '@/core/entities'
+import { Colors } from '@/shared/constants/theme'
 
 interface HabitGridCellProps {
-  status: CellStatus;
-  size?: number;
+  status: CellStatus
+  size?: number
 }
 
 const STATUS_COLORS: Record<
@@ -27,7 +27,7 @@ const STATUS_COLORS: Record<
   none_completed: {
     solid: Colors.gray[200],
   },
-};
+}
 
 // Simple diagonal split using two triangles with rotation
 function DiagonalSplit({
@@ -35,25 +35,25 @@ function DiagonalSplit({
   topLeftColor,
   bottomRightColor,
 }: {
-  size: number;
-  topLeftColor: string;
-  bottomRightColor: string;
+  size: number
+  topLeftColor: string
+  bottomRightColor: string
 }) {
   // Create diagonal effect with two overlaid triangles
-  const triangleWidth = size * 1.5;
-  const triangleHeight = size * 1.5;
+  const triangleWidth = size * 1.5
+  const triangleHeight = size * 1.5
 
   return (
-    <View style={{ width: size, height: size, overflow: "hidden" }}>
+    <View style={{ width: size, height: size, overflow: 'hidden' }}>
       {/* Bottom right triangle (purple) - positioned in bottom-right */}
       <View
         style={{
-          position: "absolute",
+          position: 'absolute',
           width: triangleWidth,
           height: triangleHeight,
           backgroundColor: bottomRightColor,
           transform: [
-            { rotate: "45deg" },
+            { rotate: '45deg' },
             { translateX: -size * 0.6 },
             { translateY: -size * 0.6 },
           ],
@@ -62,41 +62,41 @@ function DiagonalSplit({
       {/* Top left triangle (green) */}
       <View
         style={{
-          position: "absolute",
+          position: 'absolute',
           width: triangleWidth,
           height: triangleHeight,
           backgroundColor: topLeftColor,
           transform: [
-            { rotate: "45deg" },
+            { rotate: '45deg' },
             { translateX: -size * 0.6 },
             { translateY: -size * 0.4 },
           ],
         }}
       />
     </View>
-  );
+  )
 }
 
 export function HabitGridCell({ status, size = 32 }: HabitGridCellProps) {
-  const config = STATUS_COLORS[status];
+  const config = STATUS_COLORS[status]
 
   const containerStyle = {
     width: size,
     height: size,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: Colors.gray[300],
-  };
+  }
 
-  if (status === "both_completed") {
+  if (status === 'both_completed') {
     return (
       <DiagonalSplit
         size={size}
         topLeftColor={config.topLeft!}
         bottomRightColor={config.bottomRight!}
       />
-    );
+    )
   }
 
   // Solid color
-  return <View style={[containerStyle, { backgroundColor: config.solid }]} />;
+  return <View style={[containerStyle, { backgroundColor: config.solid }]} />
 }
