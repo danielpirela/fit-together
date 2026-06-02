@@ -1,29 +1,7 @@
 {
-  "extends": "expo/tsconfig.base",
-  "compilerOptions": {
-    "strict": true,
-    "jsx": "react-jsx",
-    "moduleResolution": "bundler",
-    "module": "esnext",
-    "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
-    "paths": {
-      "@/components/*": ["./components/*"],
-      "@/constants/*": ["./constants/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/core/*": ["./src/core/*"],
-      "@/shared/*": ["./src/shared/*"],
-      "@/stores/*": ["./src/stores/*"],
-      "@/*": ["./src/*"]
-    }
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts",
-    "nativewind-env.d.ts",
-    "global.d.ts"
-  ],
-  "exclude": ["node_modules", "android", "ios"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }
