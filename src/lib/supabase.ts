@@ -1,17 +1,47 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.EXPO_PUBLIC_SUPABASE_KEY!
+// Client-side only Supabase instance
+// We use a lazy getter to avoid SSR issues
+let _supabase: SupabaseClient | null = null
 
-export const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
+export function getSupabase(): SupabaseClient | null {
+  // @ts-expect-error - We check runtime environment
+  if (typeof globalThis.window === 'undefined') {
+    return null
+  }
+
+  if (!_supabase) {
+    // Dynamic require to avoid SSR issues
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const AsyncStorage = require('@react-native-async-storage/async-storage').default
+
+    const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.EXPO_PUBLIC_SUPABASE_KEY
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.warn('Supabase credentials not configured')
+      return null
+    }
+
+    _supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        storage: AsyncStorage,
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: false,
+      },
+    })
+  }
+
+  return _supabase
+}
+
+// Export a proxy that lazily gets the client
+export const supabase = {
+  get client() {
+    return getSupabase()
   },
-})
+}
 
 // Type definitions for Supabase database
 export type Database = {

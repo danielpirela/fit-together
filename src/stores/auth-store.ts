@@ -1,6 +1,6 @@
 import type { User as SupabaseUser } from '@supabase/supabase-js'
 import { create } from 'zustand'
-import { type Database, supabase } from '@/lib/supabase'
+import { type Database, getSupabase } from '@/lib/supabase'
 
 type User = Database['public']['Tables']['users']['Row']
 
@@ -27,6 +27,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   error: null,
 
   initialize: async () => {
+    const supabase = getSupabase()
+    if (!supabase) {
+      set({ isInitialized: true, isLoading: false })
+      return
+    }
+
     try {
       set({ isLoading: true, error: null })
 
@@ -75,6 +81,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   signIn: async (email: string, password: string) => {
+    const supabase = getSupabase()
+    if (!supabase) throw new Error('Supabase not available')
+
     try {
       set({ isLoading: true, error: null })
 
@@ -100,6 +109,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   signUp: async (email: string, password: string, displayName: string) => {
+    const supabase = getSupabase()
+    if (!supabase) throw new Error('Supabase not available')
+
     try {
       set({ isLoading: true, error: null })
 
@@ -133,6 +145,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   signOut: async () => {
+    const supabase = getSupabase()
+    if (!supabase) return
+
     try {
       set({ isLoading: true, error: null })
 
@@ -148,6 +163,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   resetPassword: async (email: string) => {
+    const supabase = getSupabase()
+    if (!supabase) throw new Error('Supabase not available')
+
     try {
       set({ isLoading: true, error: null })
 
@@ -165,6 +183,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   updateProfile: async (displayName: string) => {
+    const supabase = getSupabase()
+    if (!supabase) throw new Error('Supabase not available')
+
     try {
       const { user } = get()
       if (!user) throw new Error('Not authenticated')

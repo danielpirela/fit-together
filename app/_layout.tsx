@@ -1,13 +1,13 @@
 import 'react-native-reanimated'
-import 'react-native-worklets'
 import '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import { ToastProvider } from '@/shared/components/toast'
 import '../src/global.css'
 
 export default function RootLayout() {
   return (
-    <>
+    <ToastProvider>
       <StatusBar style="dark" />
       <Stack
         screenOptions={{
@@ -31,6 +31,6 @@ export default function RootLayout() {
         />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
       </Stack>
-    </>
+    </ToastProvider>
   )
 }

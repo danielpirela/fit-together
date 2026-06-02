@@ -21,7 +21,7 @@ const STATUS_CONFIG: Record<
 > = {
   pending: {
     label: 'Pending',
-    bgColor: Colors.system.yellow + '30', // Add transparency
+    bgColor: `${Colors.system.yellow}30`, // Add transparency
     textColor: '#B8860B', // Dark goldenrod
   },
   accepted: {

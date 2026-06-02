@@ -1,5 +1,4 @@
 /// <reference types="react-native" />
-/// <reference types="expo-app" />
 /// <reference types="react" />
 
 // CSS module declarations
