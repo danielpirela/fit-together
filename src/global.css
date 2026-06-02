@@ -1,0 +1,96 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+
+/* iOS Platform Styles */
+:root {
+  --font-sans: system-ui;
+  --font-mono: ui-monospace;
+  --font-serif: ui-serif;
+  --font-rounded: ui-rounded;
+}
+
+/* Design System Tokens */
+@theme {
+  /* Primary Colors - Couple Colors */
+  --color-green-primary: #34C759;
+  --color-green-light: #A8E6CF;
+  --color-purple-primary: #AF52DE;
+  --color-purple-light: #D4A5E8;
+  
+  /* Semantic Colors */
+  --color-red-completion: #FF3B30;
+  --color-success: #34C759;
+  --color-warning: #FF9500;
+  --color-error: #FF3B30;
+  
+  /* iOS System Colors */
+  --color-ios-blue: #007AFF;
+  --color-ios-indigo: #5856D6;
+  --color-ios-orange: #FF9500;
+  
+  /* Neutral Scale */
+  --color-gray-50: #F2F2F7;
+  --color-gray-100: #E5E5EA;
+  --color-gray-200: #D1D1D6;
+  --color-gray-300: #C7C7CC;
+  --color-gray-400: #8E8E93;
+  --color-gray-500: #636366;
+  --color-gray-600: #48484A;
+  --color-gray-700: #3A3A3C;
+  --color-gray-800: #2C2C2E;
+  --color-gray-900: #1C1C1E;
+  
+  /* Background Colors */
+  --color-background: #F2F2F7;
+  --color-surface: #FFFFFF;
+  --color-surface-secondary: #F2F2F7;
+  
+  /* Text Colors */
+  --color-text-primary: #000000;
+  --color-text-secondary: #8E8E93;
+  --color-text-tertiary: #C7C7CC;
+  
+  /* Border Colors */
+  --color-border: #D1D1D6;
+  --color-border-light: #E5E5EA;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  
+  /* Font Sizes */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+  
+  /* Font Weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+}
