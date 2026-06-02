@@ -1,0 +1,19 @@
+// Auth layout - stack navigator with no header
+// Handles auth flow screens
+
+import { Stack } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+
+export default function AuthLayout() {
+  return (
+    <>
+      <StatusBar style="dark" />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: 'slide_from_right',
+        }}
+      />
+    </>
+  )
+}
