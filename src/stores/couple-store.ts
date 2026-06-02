@@ -1,16 +1,19 @@
 import { create } from 'zustand'
 import { type Database, supabase } from '@/lib/supabase'
+import type { RealtimeChannel } from '@supabase/supabase-js'
 
 type CoupleRow = Database['public']['Tables']['couples']['Row']
-// type InvitationRow = Database["public"]["Tables"]["invitations"]["Row"];
 
 interface CoupleState {
   couple: CoupleRow | null
   isLoading: boolean
   error: string | null
+  realtimeChannel: RealtimeChannel | null
 
   // Actions
   fetchCouple: (userId: string) => Promise<void>
+  subscribeToChanges: (userId: string) => void
+  unsubscribe: () => void
   createCouple: (name: string, partnerAId: string) => Promise<CoupleRow>
   invitePartner: (coupleId: string, inviterId: string, inviteeEmail: string) => Promise<void>
   acceptInvitation: (token: string, userId: string) => Promise<void>
@@ -23,6 +26,7 @@ export const useCoupleStore = create<CoupleState>((set, get) => ({
   couple: null,
   isLoading: false,
   error: null,
+  realtimeChannel: null,
 
   fetchCouple: async (userId: string) => {
     try {
@@ -38,8 +42,75 @@ export const useCoupleStore = create<CoupleState>((set, get) => ({
       if (error && error.code !== 'PGRST116') throw error // Not found
 
       set({ couple: data || null, isLoading: false })
+
+      // Subscribe to realtime changes
+      if (data) {
+        get().subscribeToChanges(userId)
+      }
     } catch (error) {
       set({ error: (error as Error).message, isLoading: false })
+    }
+  },
+
+  subscribeToChanges: (userId: string) => {
+    // Unsubscribe from existing channel if any
+    const { realtimeChannel } = get()
+    if (realtimeChannel) {
+      realtimeChannel.unsubscribe()
+    }
+
+    // Subscribe to couple changes
+    const channel = supabase
+      .channel('couple-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'couples',
+        },
+        (payload) => {
+          const updatedCouple = payload.new as CoupleRow
+          set((state) => ({
+            couple: state.couple?.id === updatedCouple.id ? updatedCouple : state.couple,
+          }))
+        },
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'invitations',
+          filter: `invitee_email=in.(SELECT email FROM users WHERE id='${userId}')`,
+        },
+        (payload) => {
+          // New invitation for this user - could trigger notification
+          console.log('New invitation received:', payload.new)
+        },
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'invitations',
+        },
+        (payload) => {
+          // Invitation status changed - could update UI
+          console.log('Invitation updated:', payload.new)
+        },
+      )
+      .subscribe()
+
+    set({ realtimeChannel: channel })
+  },
+
+  unsubscribe: () => {
+    const { realtimeChannel } = get()
+    if (realtimeChannel) {
+      realtimeChannel.unsubscribe()
+      set({ realtimeChannel: null })
     }
   },
 

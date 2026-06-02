@@ -1,5 +1,5 @@
 allowBuilds:
-  msgpackr-extract: set this to true or false
+  msgpackr-extract: true
 minimumReleaseAgeExclude:
   - '@supabase/auth-js@2.107.0'
   - '@supabase/functions-js@2.107.0'

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { SharedCompletion } from '@/core/entities'
 import { type Database, supabase } from '@/lib/supabase'
+import type { RealtimeChannel } from '@supabase/supabase-js'
 
 type HabitRow = Database['public']['Tables']['habits']['Row']
 type CompletionRow = Database['public']['Tables']['completions']['Row']
@@ -10,9 +11,12 @@ interface HabitsState {
   completions: Map<string, CompletionRow[]> // habitId -> completions
   isLoading: boolean
   error: string | null
+  realtimeChannel: RealtimeChannel | null
 
   // Actions
   fetchHabits: (coupleId: string) => Promise<void>
+  subscribeToChanges: (coupleId: string) => void
+  unsubscribe: () => void
   createHabit: (habit: Omit<HabitRow, 'id' | 'created_at' | 'updated_at'>) => Promise<HabitRow>
   updateHabit: (id: string, updates: Partial<HabitRow>) => Promise<void>
   deleteHabit: (id: string) => Promise<void>
@@ -33,6 +37,7 @@ export const useHabitsStore = create<HabitsState>((set, get) => ({
   completions: new Map(),
   isLoading: false,
   error: null,
+  realtimeChannel: null,
 
   fetchHabits: async (coupleId: string) => {
     try {
@@ -62,8 +67,108 @@ export const useHabitsStore = create<HabitsState>((set, get) => ({
       }
 
       set({ completions: completionsMap })
+
+      // Subscribe to realtime changes
+      get().subscribeToChanges(coupleId)
     } catch (error) {
       set({ error: (error as Error).message, isLoading: false })
+    }
+  },
+
+  subscribeToChanges: (coupleId: string) => {
+    // Unsubscribe from existing channel if any
+    const { realtimeChannel } = get()
+    if (realtimeChannel) {
+      realtimeChannel.unsubscribe()
+    }
+
+    // Create new realtime channel
+    const channel = supabase
+      .channel(`habits-${coupleId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'completions',
+          filter: `habit_id=in.(SELECT id FROM habits WHERE couple_id='${coupleId}')`,
+        },
+        (payload) => {
+          const completion = payload.new as CompletionRow
+          set((state) => {
+            const habitCompletions = state.completions.get(completion.habit_id) || []
+            // Check if already exists
+            if (habitCompletions.find((c) => c.id === completion.id)) return state
+            return {
+              completions: new Map(state.completions).set(completion.habit_id, [
+                ...habitCompletions,
+                completion,
+              ]),
+            }
+          })
+        },
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'DELETE',
+          schema: 'public',
+          table: 'completions',
+        },
+        (payload) => {
+          const completion = payload.old as { id: string; habit_id: string }
+          set((state) => {
+            const habitCompletions = state.completions.get(completion.habit_id) || []
+            return {
+              completions: new Map(state.completions).set(
+                completion.habit_id,
+                habitCompletions.filter((c) => c.id !== completion.id),
+              ),
+            }
+          })
+        },
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'habits',
+          filter: `couple_id=eq.${coupleId}`,
+        },
+        (payload) => {
+          const habit = payload.new as HabitRow
+          set((state) => ({
+            habits: [...state.habits, habit],
+            completions: new Map(state.completions).set(habit.id, []),
+          }))
+        },
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'habits',
+          filter: `couple_id=eq.${coupleId}`,
+        },
+        (payload) => {
+          const habit = payload.new as HabitRow
+          set((state) => ({
+            habits: state.habits.map((h) => (h.id === habit.id ? habit : h)),
+          }))
+        },
+      )
+      .subscribe()
+
+    set({ realtimeChannel: channel })
+  },
+
+  unsubscribe: () => {
+    const { realtimeChannel } = get()
+    if (realtimeChannel) {
+      realtimeChannel.unsubscribe()
+      set({ realtimeChannel: null })
     }
   },
 
