@@ -16,8 +16,7 @@
         "noUnusedVariables": "warn",
         "noUnusedImports": "warn",
         "noUnusedFunctionParameters": "warn",
-        "useExhaustiveDependencies": "off",
-        "noDeprecation": "off"
+        "useExhaustiveDependencies": "off"
       },
       "style": {
         "noNonNullAssertion": "off"

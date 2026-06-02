@@ -55,10 +55,10 @@ export default function InvitePartnerScreen() {
     }
   }
 
-  const handleCopyLink = () => {
+  const handleCopyLink = async () => {
     // Generate a placeholder link - in production this would be a real invitation link
     const inviteLink = `https://togetherhabits.app/invite/${couple?.id}`
-    Clipboard.setString(inviteLink)
+    await Clipboard.setStringAsync(inviteLink)
     Alert.alert('Link Copied', 'Share this link with your partner')
   }
 
