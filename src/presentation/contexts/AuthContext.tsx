@@ -10,6 +10,19 @@ import {
   InitializeAuthUseCase,
 } from '../../application/use-cases/auth';
 
+// TEMPORARY: Auth bypass for local dev + redesign work.
+// TODO: restore real Supabase auth when the trigger migration is in place
+// (see supabase/migrations/) and email verification is handled.
+const MOCK_USER: User = {
+  id: '00000000-0000-0000-0000-000000000001',
+  email: 'dev@fit-together.local',
+  displayName: 'Dev User',
+  coupleId: null,
+  role: null,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
+
 interface AuthStore {
   user: User | null;
   isLoading: boolean;
@@ -38,44 +51,18 @@ export const useAuthStore = create<AuthStore>()(
       error: null,
 
       initialize: async () => {
-        try {
-          set({ isLoading: true });
-          const user = await initializeAuthUseCase.execute();
-          set({ user, isInitialized: true, isLoading: false });
-
-          authRepository.onAuthStateChange(async (authUser) => {
-            if (authUser) {
-              const userProfile = await userRepository.getById(authUser.id);
-              set({ user: userProfile });
-            } else {
-              set({ user: null });
-            }
-          });
-        } catch (error) {
-          set({ error: (error as Error).message, isInitialized: true, isLoading: false });
-        }
+        // BYPASS: skip Supabase session check, set mock user directly.
+        set({ user: MOCK_USER, isInitialized: true, isLoading: false });
       },
 
-      signIn: async (email, password) => {
-        try {
-          set({ isLoading: true, error: null });
-          const user = await signInUseCase.execute(email, password);
-          set({ user, isLoading: false });
-        } catch (error) {
-          set({ error: (error as Error).message, isLoading: false });
-          throw error;
-        }
+      signIn: async (_email, _password) => {
+        // BYPASS: ignore credentials, just sign in as mock user.
+        set({ user: MOCK_USER, isLoading: false, error: null });
       },
 
-      signUp: async (email, password, displayName) => {
-        try {
-          set({ isLoading: true, error: null });
-          const user = await signUpUseCase.execute(email, password, displayName);
-          set({ user, isLoading: false });
-        } catch (error) {
-          set({ error: (error as Error).message, isLoading: false });
-          throw error;
-        }
+      signUp: async (_email, _password, _displayName) => {
+        // BYPASS: ignore form, just sign in as mock user.
+        set({ user: MOCK_USER, isLoading: false, error: null });
       },
 
       signOut: async () => {
