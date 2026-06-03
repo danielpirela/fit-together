@@ -1,0 +1,126 @@
+/**
+ * Design System Tokens — Obsidian Pulse Dark Palette
+ * All color, spacing, and motion tokens as CSS custom properties.
+ * Consumed by Tailwind v4 @theme block and component styles.
+ */
+
+:root {
+  /* ── Surface Colors ── */
+  --color-surface-primary: #0A0A0F;
+  --color-surface-secondary: #161622;
+  --color-surface-elevated: #1E1E2E;
+
+  /* ── Text Colors ── */
+  --color-text-primary: #EDEDEF;
+  --color-text-muted: #6B6B7B;
+  --color-text-disabled: #3A3A4A;
+
+  /* ── Accent Colors ── */
+  --color-accent-primary: #00D4AA;
+  --color-accent-secondary: #FF3366;
+  --color-accent-tertiary: #A855F7;
+  --color-accent-gradient: linear-gradient(135deg, #00D4AA 0%, #FF3366 100%);
+
+  /* ── Border Colors ── */
+  --color-border-subtle: #272732;
+  --color-border-active: #00D4AA;
+
+  /* ── Feedback Colors ── */
+  --color-gold-flash: #FFD700;
+  --color-feedback-success: #00D4AA;
+  --color-feedback-error: #FF3366;
+  --color-feedback-warning: #FFB800;
+
+  /* ── Spacing Tokens (4px base) ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ── Motion Duration Tokens ── */
+  --motion-duration-instant: 80ms;
+  --motion-duration-fast: 150ms;
+  --motion-duration-normal: 300ms;
+  --motion-duration-slow: 500ms;
+  --motion-duration-cascade: 250ms;
+
+  /* ── Motion Easing Tokens ── */
+  --motion-ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --motion-ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --motion-stagger-delay: 60ms;
+
+  /* ── Z-Index Scale ── */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+/* ── Automatic Dark Mode (respects OS preference) ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-base: var(--color-surface-primary);
+  }
+}
+
+/* ── Explicit Dark Override ── */
+[data-theme="dark"] {
+  --color-bg-base: var(--color-surface-primary);
+}
+
+/* ── Reduced Motion Override ── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-instant: 0ms;
+    --motion-duration-fast: 0ms;
+    --motion-duration-normal: 0ms;
+    --motion-duration-slow: 0ms;
+    --motion-duration-cascade: 0ms;
+  }
+}
+
+/* ── Tailwind v4 @theme — maps CSS vars to Tailwind tokens ── */
+@theme {
+  --color-surface-primary: var(--color-surface-primary);
+  --color-surface-secondary: var(--color-surface-secondary);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-disabled: var(--color-text-disabled);
+  --color-accent-primary: var(--color-accent-primary);
+  --color-accent-secondary: var(--color-accent-secondary);
+  --color-accent-tertiary: var(--color-accent-tertiary);
+  --color-accent-gradient: var(--color-accent-gradient);
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-active: var(--color-border-active);
+  --color-gold-flash: var(--color-gold-flash);
+  --color-feedback-success: var(--color-feedback-success);
+  --color-feedback-error: var(--color-feedback-error);
+  --color-feedback-warning: var(--color-feedback-warning);
+
+  --space-1: var(--space-1);
+  --space-2: var(--space-2);
+  --space-3: var(--space-3);
+  --space-4: var(--space-4);
+  --space-5: var(--space-5);
+  --space-6: var(--space-6);
+  --space-8: var(--space-8);
+  --space-10: var(--space-10);
+  --space-12: var(--space-12);
+  --space-16: var(--space-16);
+
+  --z-base: var(--z-base);
+  --z-dropdown: var(--z-dropdown);
+  --z-sticky: var(--z-sticky);
+  --z-overlay: var(--z-overlay);
+  --z-modal: var(--z-modal);
+  --z-toast: var(--z-toast);
+}
