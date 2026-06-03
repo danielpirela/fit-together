@@ -1,8 +1,8 @@
 import { clsx } from 'clsx';
 import { useLayoutEffect, useRef } from 'react';
 
-import { gsap } from '../../motion/gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
+import { gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 interface LoadingSpinnerProps {
   size?: 'small' | 'medium' | 'large';

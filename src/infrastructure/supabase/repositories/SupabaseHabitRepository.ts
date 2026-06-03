@@ -1,9 +1,9 @@
 import type {
   IHabitRepository,
   ICompletionRepository,
-} from '../../../domain/repositories/IHabitRepository';
-import type { Habit, CreateHabitParams, Completion } from '../../../domain/entities';
-import { getSupabaseClient } from '../SupabaseClient';
+} from '@/domain/repositories/IHabitRepository';
+import type { Habit, CreateHabitParams, Completion } from '@/domain/entities';
+import { getSupabaseClient } from '@/infrastructure/supabase/SupabaseClient';
 
 export class SupabaseHabitRepository implements IHabitRepository {
   async getByCoupleId(coupleId: string): Promise<Habit[]> {

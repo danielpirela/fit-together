@@ -2,10 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import './index.css';
-import './presentation/styles/theme.css';
-import App from './App';
-import { MotionProvider } from './presentation/motion/MotionProvider';
+import '@/index.css';
+import '@/presentation/styles/theme.css';
+import App from '@/App';
+import { MotionProvider } from '@/presentation/motion/MotionProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {

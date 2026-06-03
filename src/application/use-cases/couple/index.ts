@@ -1,5 +1,5 @@
-import type { Couple } from '../../../domain/entities';
-import type { ICoupleRepository, IUserRepository } from '../../../domain/repositories';
+import type { Couple } from '@/domain/entities';
+import type { ICoupleRepository, IUserRepository } from '@/domain/repositories';
 
 export class CreateCoupleUseCase {
   constructor(

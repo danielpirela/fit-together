@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import type { Habit, CreateHabitParams, Completion } from '../../domain/entities';
-import { habitRepository, completionRepository } from '../../infrastructure/supabase/repositories';
+import type { Habit, CreateHabitParams, Completion } from '@/domain/entities';
+import { habitRepository, completionRepository } from '@/infrastructure/supabase/repositories';
 import {
   GetHabitsUseCase,
   CreateHabitUseCase,
@@ -8,7 +8,7 @@ import {
   DeleteHabitUseCase,
   ToggleCompletionUseCase,
   GetCompletionsUseCase,
-} from '../../application/use-cases/habits';
+} from '@/application/use-cases/habits';
 
 interface HabitsStore {
   habits: Habit[];

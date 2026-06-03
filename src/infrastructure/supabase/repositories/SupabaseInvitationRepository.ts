@@ -1,6 +1,6 @@
-import type { IInvitationRepository } from '../../../domain/repositories/IInvitationRepository';
-import type { Invitation, CreateInvitationParams } from '../../../domain/entities';
-import { getSupabaseClient } from '../SupabaseClient';
+import type { IInvitationRepository } from '@/domain/repositories/IInvitationRepository';
+import type { Invitation, CreateInvitationParams } from '@/domain/entities';
+import { getSupabaseClient } from '@/infrastructure/supabase/SupabaseClient';
 
 export class SupabaseInvitationRepository implements IInvitationRepository {
   async getByToken(token: string): Promise<Invitation | null> {

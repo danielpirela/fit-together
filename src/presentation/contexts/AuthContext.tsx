@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import type { User } from '../../domain/entities';
-import { authRepository, userRepository } from '../../infrastructure/supabase/repositories';
+import type { User } from '@/domain/entities';
+import { authRepository, userRepository } from '@/infrastructure/supabase/repositories';
 import {
   SignInUseCase,
   SignUpUseCase,
   SignOutUseCase,
   ResetPasswordUseCase,
   InitializeAuthUseCase,
-} from '../../application/use-cases/auth';
+} from '@/application/use-cases/auth';
 
 // TEMPORARY: Auth bypass for local dev + redesign work.
 // TODO: restore real Supabase auth when the trigger migration is in place

@@ -1,4 +1,4 @@
-import type { Couple, CreateCoupleParams } from '../entities';
+import type { Couple, CreateCoupleParams } from '@/domain/entities';
 
 export interface ICoupleRepository {
   getByUserId(userId: string): Promise<Couple | null>;

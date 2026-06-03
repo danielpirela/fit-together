@@ -1,15 +1,15 @@
 import { create } from 'zustand';
-import type { Couple } from '../../domain/entities';
+import type { Couple } from '@/domain/entities';
 import {
   coupleRepository,
   invitationRepository,
   userRepository,
-} from '../../infrastructure/supabase/repositories';
+} from '@/infrastructure/supabase/repositories';
 import {
   CreateCoupleUseCase,
   AcceptInvitationUseCase,
   InvitePartnerUseCase,
-} from '../../application/use-cases/couple';
+} from '@/application/use-cases/couple';
 
 interface CoupleStore {
   couple: Couple | null;

@@ -5,8 +5,8 @@
  */
 
 import { useLayoutEffect, useRef, useState } from 'react';
-import { gsap } from './gsap';
-import { useReducedMotion } from './useReducedMotion';
+import { gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 interface PartnerRippleProps {
   /** When true, the animation fires */

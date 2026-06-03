@@ -1,10 +1,10 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { gsap, easeOutQuart } from '../../motion/gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
-import { Button } from '../../components/ui/Button';
-import { TextInput } from '../../components/ui/TextInput';
-import { useToast } from '../../components/ui/Toast';
+import { gsap, easeOutQuart } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
+import { Button } from '@/presentation/components/ui/Button';
+import { TextInput } from '@/presentation/components/ui/TextInput';
+import { useToast } from '@/presentation/components/ui/Toast';
 
 /* ── Mock data (auth bypass — no real couple) ── */
 const MOCK_COUPLE = { id: 'mock-1', name: 'The Johnsons', code: 'JHN-42-XY' };

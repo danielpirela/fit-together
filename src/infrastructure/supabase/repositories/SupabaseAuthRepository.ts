@@ -1,5 +1,5 @@
-import type { IAuthRepository, AuthUser } from '../../../domain/repositories/IAuthRepository';
-import { getSupabaseClient } from '../SupabaseClient';
+import type { IAuthRepository, AuthUser } from '@/domain/repositories/IAuthRepository';
+import { getSupabaseClient } from '@/infrastructure/supabase/SupabaseClient';
 
 export class SupabaseAuthRepository implements IAuthRepository {
   async getSession(): Promise<{ user: AuthUser | null }> {

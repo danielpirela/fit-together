@@ -1,5 +1,5 @@
-import type { Habit, CreateHabitParams, Completion } from '../../../domain/entities';
-import type { IHabitRepository, ICompletionRepository } from '../../../domain/repositories';
+import type { Habit, CreateHabitParams, Completion } from '@/domain/entities';
+import type { IHabitRepository, ICompletionRepository } from '@/domain/repositories';
 
 export class GetHabitsUseCase {
   constructor(private habitRepo: IHabitRepository) {}

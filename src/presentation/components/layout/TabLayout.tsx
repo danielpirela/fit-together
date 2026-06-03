@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { clsx } from 'clsx';
 import gsap from 'gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 const tabs = [
   { name: 'Home', path: '/', icon: '🏠' },

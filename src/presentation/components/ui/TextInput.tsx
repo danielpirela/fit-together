@@ -1,8 +1,8 @@
 import { clsx } from 'clsx';
 import { type InputHTMLAttributes, useRef, useState } from 'react';
 
-import { easeOutQuart, gsap } from '../../motion/gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
+import { easeOutQuart, gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   label?: string;

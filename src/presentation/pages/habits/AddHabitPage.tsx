@@ -1,10 +1,10 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { clsx } from 'clsx';
-import { easeOutQuart, gsap } from '../../motion/gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
-import { Button } from '../../components/ui/Button';
-import { TextInput } from '../../components/ui/TextInput';
+import { easeOutQuart, gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
+import { Button } from '@/presentation/components/ui/Button';
+import { TextInput } from '@/presentation/components/ui/TextInput';
 
 const COLORS = [
   { name: 'Green', value: '#34C759' },

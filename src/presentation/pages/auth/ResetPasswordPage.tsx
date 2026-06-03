@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuthStore } from '../../contexts/AuthContext';
-import { Button } from '../../components/ui/Button';
-import { TextInput } from '../../components/ui/TextInput';
-import { useToast } from '../../components/ui/Toast';
+import { useAuthStore } from '@/presentation/contexts/AuthContext';
+import { Button } from '@/presentation/components/ui/Button';
+import { TextInput } from '@/presentation/components/ui/TextInput';
+import { useToast } from '@/presentation/components/ui/Toast';
 import gsap from 'gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 export function ResetPasswordPage() {
   const { resetPassword, isLoading, error, clearError } = useAuthStore();

@@ -1,9 +1,9 @@
 import { useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../contexts/AuthContext';
-import { Button } from '../components/ui/Button';
+import { useAuthStore } from '@/presentation/contexts/AuthContext';
+import { Button } from '@/presentation/components/ui/Button';
 import gsap from 'gsap';
-import { useReducedMotion } from '../motion/useReducedMotion';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 export function InvitePage() {
   const { token } = useParams<{ token: string }>();

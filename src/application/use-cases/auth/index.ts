@@ -1,5 +1,5 @@
-import type { User } from '../../../domain/entities';
-import type { IAuthRepository, IUserRepository } from '../../../domain/repositories';
+import type { User } from '@/domain/entities';
+import type { IAuthRepository, IUserRepository } from '@/domain/repositories';
 
 export interface AuthState {
   user: User | null;

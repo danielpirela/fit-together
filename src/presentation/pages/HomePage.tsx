@@ -1,8 +1,8 @@
 import { clsx } from 'clsx';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { easeOutQuart, gsap } from '../motion/gsap';
-import { useReducedMotion } from '../motion/useReducedMotion';
+import { easeOutQuart, gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 /* ── Mock data (auth bypass — no real user) ── */
 const MOCK_USER = { name: 'Daniel', email: 'daniel@example.com' };

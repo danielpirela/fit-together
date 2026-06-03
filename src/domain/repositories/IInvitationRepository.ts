@@ -1,4 +1,4 @@
-import type { Invitation, CreateInvitationParams } from '../entities';
+import type { Invitation, CreateInvitationParams } from '@/domain/entities';
 
 export interface IInvitationRepository {
   getByToken(token: string): Promise<Invitation | null>;

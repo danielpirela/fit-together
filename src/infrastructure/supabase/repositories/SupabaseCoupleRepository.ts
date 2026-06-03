@@ -1,6 +1,6 @@
-import type { ICoupleRepository } from '../../../domain/repositories/ICoupleRepository';
-import type { Couple, CreateCoupleParams } from '../../../domain/entities';
-import { getSupabaseClient } from '../SupabaseClient';
+import type { ICoupleRepository } from '@/domain/repositories/ICoupleRepository';
+import type { Couple, CreateCoupleParams } from '@/domain/entities';
+import { getSupabaseClient } from '@/infrastructure/supabase/SupabaseClient';
 
 export class SupabaseCoupleRepository implements ICoupleRepository {
   async getByUserId(userId: string): Promise<Couple | null> {

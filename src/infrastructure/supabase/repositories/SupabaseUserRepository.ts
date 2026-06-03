@@ -1,6 +1,6 @@
-import type { IUserRepository } from '../../../domain/repositories/IAuthRepository';
-import type { User, CreateUserParams } from '../../../domain/entities';
-import { getSupabaseClient } from '../SupabaseClient';
+import type { IUserRepository } from '@/domain/repositories/IAuthRepository';
+import type { User, CreateUserParams } from '@/domain/entities';
+import { getSupabaseClient } from '@/infrastructure/supabase/SupabaseClient';
 
 export class SupabaseUserRepository implements IUserRepository {
   async getById(id: string): Promise<User | null> {

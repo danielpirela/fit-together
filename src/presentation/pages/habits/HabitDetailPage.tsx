@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { clsx } from 'clsx';
-import { easeOutQuart, gsap } from '../../motion/gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
+import { easeOutQuart, gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 /* ── Mock data ── */
 const MOCK_HABITS = [

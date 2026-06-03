@@ -1,4 +1,4 @@
-import type { User, CreateUserParams } from '../entities';
+import type { User, CreateUserParams } from '@/domain/entities';
 
 export interface AuthUser {
   id: string;

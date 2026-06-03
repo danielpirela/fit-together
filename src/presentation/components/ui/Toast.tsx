@@ -9,8 +9,8 @@ import {
 } from 'react';
 
 import { clsx } from 'clsx';
-import { easeOutQuart, gsap } from '../../motion/gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
+import { easeOutQuart, gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 interface Toast {
   id: string;

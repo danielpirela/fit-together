@@ -1,4 +1,4 @@
-import type { Habit, CreateHabitParams, Completion } from '../entities';
+import type { Habit, CreateHabitParams, Completion } from '@/domain/entities';
 
 export interface IHabitRepository {
   getByCoupleId(coupleId: string): Promise<Habit[]>;

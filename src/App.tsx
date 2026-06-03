@@ -1,21 +1,21 @@
+import { TabLayout } from '@/presentation/components/layout/TabLayout';
+import { LoadingScreen } from '@/presentation/components/ui/LoadingSpinner';
+import { ToastProvider } from '@/presentation/components/ui/Toast';
+import { useAuthStore } from '@/presentation/contexts/AuthContext';
 import { useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { ToastProvider } from './presentation/components/ui/Toast';
-import { TabLayout } from './presentation/components/layout/TabLayout';
-import { LoadingScreen } from './presentation/components/ui/LoadingSpinner';
-import { useAuthStore } from './presentation/contexts/AuthContext';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
-import { LoginPage } from './presentation/pages/auth/LoginPage';
-import { SignUpPage } from './presentation/pages/auth/SignUpPage';
-import { ResetPasswordPage } from './presentation/pages/auth/ResetPasswordPage';
-import { CreateCouplePage } from './presentation/pages/couple/CreateCouplePage';
-import { InvitePartnerPage } from './presentation/pages/couple/InvitePartnerPage';
-import { HomePage } from './presentation/pages/HomePage';
-import { HabitsPage } from './presentation/pages/habits/HabitsPage';
-import { HabitDetailPage } from './presentation/pages/habits/HabitDetailPage';
-import { ProfilePage } from './presentation/pages/ProfilePage';
-import { AddHabitPage } from './presentation/pages/habits/AddHabitPage';
-import { InvitePage } from './presentation/pages/InvitePage';
+import { LoginPage } from '@/presentation/pages/auth/LoginPage';
+import { ResetPasswordPage } from '@/presentation/pages/auth/ResetPasswordPage';
+import { SignUpPage } from '@/presentation/pages/auth/SignUpPage';
+import { CreateCouplePage } from '@/presentation/pages/couple/CreateCouplePage';
+import { InvitePartnerPage } from '@/presentation/pages/couple/InvitePartnerPage';
+import { AddHabitPage } from '@/presentation/pages/habits/AddHabitPage';
+import { HabitDetailPage } from '@/presentation/pages/habits/HabitDetailPage';
+import { HabitsPage } from '@/presentation/pages/habits/HabitsPage';
+import { HomePage } from '@/presentation/pages/HomePage';
+import { InvitePage } from '@/presentation/pages/InvitePage';
+import { ProfilePage } from '@/presentation/pages/ProfilePage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const user = useAuthStore((s) => s.user);

@@ -1,10 +1,10 @@
 import { clsx } from 'clsx';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '../components/ui/Button';
-import { EmptyState } from '../components/ui/EmptyState';
-import { easeOutQuart, gsap } from '../motion/gsap';
-import { useReducedMotion } from '../motion/useReducedMotion';
+import { Button } from '@/presentation/components/ui/Button';
+import { EmptyState } from '@/presentation/components/ui/EmptyState';
+import { easeOutQuart, gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 /* ── Mock data (auth bypass — no real user) ── */
 const MOCK_HABITS = [

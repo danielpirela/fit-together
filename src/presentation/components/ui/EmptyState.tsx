@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef } from 'react';
 
-import { easeOutQuart, gsap } from '../../motion/gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
-import { Button } from './Button';
+import { easeOutQuart, gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
+import { Button } from '@/presentation/components/ui/Button';
 
 interface EmptyStateProps {
   title: string;

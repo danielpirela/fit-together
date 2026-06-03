@@ -9,8 +9,8 @@ import {
   createContext,
   useContext,
 } from 'react';
-import { gsap } from './gsap';
-import { useReducedMotion } from './useReducedMotion';
+import { gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 interface MotionValue {
   reducedMotion: boolean;

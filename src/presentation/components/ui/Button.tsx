@@ -1,8 +1,8 @@
 import { clsx } from 'clsx';
 import { type ButtonHTMLAttributes, type ReactNode, useLayoutEffect, useRef } from 'react';
 
-import { easeOutQuart, gsap } from '../../motion/gsap';
-import { useReducedMotion } from '../../motion/useReducedMotion';
+import { easeOutQuart, gsap } from '@/presentation/motion/gsap';
+import { useReducedMotion } from '@/presentation/motion/useReducedMotion';
 
 type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'ghost';
 type ButtonSize = 'small' | 'medium' | 'large';
