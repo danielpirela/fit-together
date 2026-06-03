@@ -1,12 +1,10 @@
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../contexts/AuthContext';
-import { useCoupleStore } from '../../contexts/CoupleContext';
-import { useHabitsStore } from '../../contexts/HabitsContext';
+import { clsx } from 'clsx';
+import { easeOutQuart, gsap } from '../../motion/gsap';
+import { useReducedMotion } from '../../motion/useReducedMotion';
 import { Button } from '../../components/ui/Button';
 import { TextInput } from '../../components/ui/TextInput';
-import { useToast } from '../../components/ui/Toast';
-import { clsx } from 'clsx';
 
 const COLORS = [
   { name: 'Green', value: '#34C759' },
@@ -29,12 +27,72 @@ const WEEKDAYS = [
   { name: 'Sun', value: 'sunday' },
 ];
 
+/* ── ParticleBurst — fires colored dots from trigger element ── */
+function ParticleBurst({ triggerRef }: { triggerRef: React.RefObject<HTMLElement | null> }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    const trigger = triggerRef.current;
+    if (!el || !trigger) return;
+
+    const parent = trigger.offsetParent as HTMLElement | null;
+    if (!parent) return;
+
+    const rect = trigger.getBoundingClientRect();
+    const parentRect = parent.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2 - parentRect.left;
+    const cy = rect.top + rect.height / 2 - parentRect.top;
+
+    const particles = el.querySelectorAll<HTMLDivElement>('.p');
+    if (reducedMotion) {
+      gsap.set(particles, { opacity: 0.4, scale: 1 });
+      gsap.to(el, { opacity: 0, duration: 0.15, delay: 0.05, onComplete: () => gsap.set(el, { display: 'none' }) });
+      return;
+    }
+
+    particles.forEach((p, i) => {
+      const angle = (i / particles.length) * Math.PI * 2;
+      const distance = 40 + Math.random() * 30;
+      gsap.set(p, { x: cx, y: cy, opacity: 1, scale: 1 });
+      gsap.to(p, {
+        x: cx + Math.cos(angle) * distance,
+        y: cy + Math.sin(angle) * distance,
+        opacity: 0,
+        scale: 0.3,
+        duration: 0.5,
+        ease: 'power2.out',
+        delay: i * 0.015,
+      });
+    });
+    gsap.to(el, { opacity: 0, duration: 0.55, onComplete: () => gsap.set(el, { display: 'none' }) });
+  }, [reducedMotion, triggerRef]);
+
+  return (
+    <div
+      ref={ref}
+      className="pointer-events-none fixed inset-0 z-50"
+      style={{ display: 'none' }}
+      aria-hidden="true"
+    >
+      {Array.from({ length: 10 }).map((_, i) => (
+        <div
+          key={i}
+          className="p absolute w-2 h-2 rounded-full"
+          style={{ background: ['#00D4AA', '#FFD700', '#FF6B35', '#A855F7', '#3B82F6'][i % 5] }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function AddHabitPage() {
   const navigate = useNavigate();
-  const user = useAuthStore((s) => s.user);
-  const couple = useCoupleStore((s) => s.couple);
-  const { createHabit, isLoading } = useHabitsStore();
-  const { showToast } = useToast();
+  const reducedMotion = useReducedMotion();
+  const submitRef = useRef<HTMLButtonElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -43,6 +101,8 @@ export function AddHabitPage() {
   const [targetCount, setTargetCount] = useState('3');
   const [targetDays, setTargetDays] = useState<string[]>(['monday', 'wednesday', 'friday']);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showBurst, setShowBurst] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const toggleDay = (day: string) => {
     setTargetDays((prev) => (prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]));
@@ -60,47 +120,74 @@ export function AddHabitPage() {
     e.preventDefault();
     if (!validate()) return;
 
-    try {
-      await createHabit({
-        coupleId: couple!.id,
-        name: name.trim(),
-        description: description.trim() || null,
-        color,
-        icon,
-        frequency: 'weekly',
-        targetDays,
-        targetCount: parseInt(targetCount) || 3,
-        createdBy: user!.id,
-      });
-      showToast('Habit created!', 'success');
-      navigate('/habits');
-    } catch {
-      showToast('Failed to create habit', 'error');
-    }
+    setSubmitted(true);
+    setShowBurst(true);
+    setTimeout(() => setShowBurst(false), 600);
+    setTimeout(() => navigate('/habits'), 350);
   };
 
+  /* Staggered entrance */
+  useLayoutEffect(() => {
+    if (reducedMotion) return;
+    const ctx = gsap.context();
+
+    if (headingRef.current) {
+      ctx.add(() => {
+        gsap.fromTo(headingRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3, delay: 0.1, ease: easeOutQuart });
+      });
+    }
+
+    if (formRef.current) {
+      const fields = formRef.current.querySelectorAll('.field-group');
+      ctx.add(() => {
+        gsap.fromTo(
+          fields,
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.25, stagger: 0.06, ease: easeOutQuart, delay: 0.15 }
+        );
+      });
+    }
+
+    return () => ctx.revert();
+  }, [reducedMotion]);
+
   return (
-    <div className="p-4">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-2xl font-bold mb-6">Add New Habit</h1>
+    <div className="min-h-screen" style={{ background: 'var(--color-surface-primary)' }}>
+      {showBurst && <ParticleBurst triggerRef={submitRef} />}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <TextInput
-            label="Habit Name"
-            value={name}
-            onChangeText={setName}
-            placeholder="e.g., Exercise"
-            error={errors.name}
-          />
-          <TextInput
-            label="Description (optional)"
-            value={description}
-            onChangeText={setDescription}
-            placeholder="Add a description"
-          />
+      <div className="max-w-md mx-auto px-4 pt-4 pb-8">
+        <h1
+          ref={headingRef}
+          className="text-2xl font-bold mb-6"
+          style={{ color: 'var(--color-text-primary)', opacity: reducedMotion ? 1 : 0 }}
+        >
+          New Habit
+        </h1>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Icon</label>
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+          <div className="field-group">
+            <TextInput
+              label="Habit Name"
+              value={name}
+              onChangeText={setName}
+              placeholder="e.g., Morning Run"
+              error={errors.name}
+            />
+          </div>
+
+          <div className="field-group">
+            <TextInput
+              label="Description (optional)"
+              value={description}
+              onChangeText={setDescription}
+              placeholder="Add a description"
+            />
+          </div>
+
+          <div className="field-group">
+            <label className="block text-sm mb-2" style={{ color: 'var(--color-text-muted)' }}>
+              Icon
+            </label>
             <div className="flex flex-wrap gap-2">
               {ICONS.map((i) => (
                 <button
@@ -110,9 +197,11 @@ export function AddHabitPage() {
                   className={clsx(
                     'w-12 h-12 rounded-xl text-2xl flex items-center justify-center transition-all',
                     icon === i
-                      ? 'ring-2 ring-[var(--color-green-primary)] bg-[var(--color-green-light)]'
-                      : 'bg-gray-100'
+                      ? 'ring-2 ring-[var(--color-green-primary)]'
+                      : 'bg-[var(--color-surface-secondary)]'
                   )}
+                  style={icon === i ? { background: `${color}20` } : undefined}
+                  aria-pressed={icon === i}
                 >
                   {i}
                 </button>
@@ -120,26 +209,29 @@ export function AddHabitPage() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Color</label>
+          <div className="field-group">
+            <label className="block text-sm mb-2" style={{ color: 'var(--color-text-muted)' }}>
+              Color
+            </label>
             <div className="flex flex-wrap gap-2">
               {COLORS.map((c) => (
                 <button
                   key={c.value}
                   type="button"
                   onClick={() => setColor(c.value)}
-                  className={clsx(
-                    'w-10 h-10 rounded-full transition-all',
-                    color === c.value && 'ring-2 ring-offset-2'
-                  )}
+                  className={clsx('w-10 h-10 rounded-full transition-all', color === c.value && 'ring-2 ring-offset-2')}
                   style={{ backgroundColor: c.value }}
+                  aria-pressed={color === c.value}
+                  aria-label={c.name}
                 />
               ))}
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Days</label>
+          <div className="field-group">
+            <label className="block text-sm mb-2" style={{ color: 'var(--color-text-muted)' }}>
+              Days
+            </label>
             <div className="flex flex-wrap gap-2">
               {WEEKDAYS.map((day) => (
                 <button
@@ -149,33 +241,41 @@ export function AddHabitPage() {
                   className={clsx(
                     'px-4 py-2 rounded-full text-sm font-medium transition-all',
                     targetDays.includes(day.value)
-                      ? 'bg-[var(--color-green-primary)] text-white'
-                      : 'bg-gray-100 text-[var(--color-text-secondary)]'
+                      ? 'text-white'
+                      : 'bg-[var(--color-surface-secondary)]'
                   )}
+                  style={targetDays.includes(day.value) ? { background: 'var(--color-accent-primary)' } : undefined}
+                  aria-pressed={targetDays.includes(day.value)}
                 >
                   {day.name}
                 </button>
               ))}
             </div>
-            {errors.days && <p className="text-sm text-red-500 mt-1">{errors.days}</p>}
+            {errors.days && (
+              <p className="text-sm mt-1" style={{ color: 'var(--color-feedback-error)' }}>
+                {errors.days}
+              </p>
+            )}
           </div>
 
-          <TextInput
-            label="Times per week"
-            type="number"
-            value={targetCount}
-            onChangeText={setTargetCount}
-            placeholder="3"
-          />
+          <div className="field-group">
+            <TextInput
+              label="Times per week"
+              type="number"
+              value={targetCount}
+              onChangeText={setTargetCount}
+              placeholder="3"
+            />
+          </div>
 
           <div className="pt-4">
             <Button
               type="submit"
-              title="Create Habit"
+              title={submitted ? 'Creating…' : 'Create Habit'}
               variant="primary"
               size="large"
               fullWidth
-              loading={isLoading}
+              disabled={submitted}
             />
           </div>
         </form>
