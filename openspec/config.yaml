@@ -1,0 +1,30 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Vite 8, React 19.2, TypeScript ~6.0, Supabase JS 2.107, Tailwind CSS 4.3, GSAP 3.15, Zustand 5, TanStack Query 5, React Router 7, PWA (vite-plugin-pwa + workbox-window)
+  Architecture: Domain-driven (domain/entities, domain/repositories, application/use-cases, infrastructure/supabase, presentation/pages|components|contexts)
+  Testing: No test runner configured — vitest/jest/playwright absent, strict_tdd: false
+  Style: Biome linter/formatter (single-quotes, semicolons, 100-line width), TypeScript strict-ish (noExplicitAny off)
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: "pnpm build"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
