@@ -1,5 +1,8 @@
-import { useState, type InputHTMLAttributes } from 'react';
 import { clsx } from 'clsx';
+import { type InputHTMLAttributes, useRef, useState } from 'react';
+
+import { easeOutQuart, gsap } from '../../motion/gsap';
+import { useReducedMotion } from '../../motion/useReducedMotion';
 
 interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   label?: string;
@@ -17,39 +20,80 @@ export function TextInput({
   error,
   helper,
   containerClassName,
+  disabled,
   ...rest
 }: TextInputProps) {
   const [isFocused, setIsFocused] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    if (!reducedMotion && inputRef.current) {
+      gsap.to(inputRef.current, { y: -2, duration: 0.15, ease: easeOutQuart });
+    }
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    if (!reducedMotion && inputRef.current) {
+      gsap.to(inputRef.current, { y: 0, duration: 0.15, ease: easeOutQuart });
+    }
+  };
+
+  const labelId = label ? `label-${label?.toLowerCase().replace(/\s+/g, '-')}` : undefined;
 
   return (
-    <div className={clsx('mb-4', containerClassName)}>
+    <div className={clsx('mb-4 relative', containerClassName)}>
       {label && (
-        <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
+        <label
+          id={labelId}
+          htmlFor={labelId}
+          className={clsx(
+            'block text-sm font-medium mb-1 transition-colors duration-150',
+            isFocused ? 'text-[var(--color-accent-primary)]' : 'text-[var(--color-text-muted)]',
+            error && 'text-[var(--color-accent-secondary)]'
+          )}
+        >
           {label}
         </label>
       )}
       <input
+        ref={inputRef}
+        id={labelId}
         value={value}
         onChange={(e) => onChangeText(e.target.value)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        disabled={disabled}
         className={clsx(
-          'w-full h-11 px-4 rounded-lg border bg-white text-base text-[var(--color-text-primary)]',
+          'w-full h-11 px-4 rounded-lg border text-base text-[var(--color-text-primary)]',
           'transition-all duration-150',
           'focus:outline-none focus:ring-2 focus:ring-offset-0',
-          !error && !isFocused && 'border-[var(--color-border-light)]',
+          !error &&
+            !isFocused &&
+            'border-[var(--color-border-subtle)] bg-[var(--color-surface-secondary)]',
           !error &&
             isFocused &&
-            'border-[var(--color-green-primary)] ring-2 ring-[var(--color-green-primary)]/20',
+            'border-[var(--color-accent-primary)] ring-2 ring-[var(--color-accent-primary)]/20 bg-[var(--color-surface-secondary)]',
           error &&
-            'border-[var(--color-red-completion)] ring-2 ring-[var(--color-red-completion)]/20',
-          rest.disabled && 'bg-gray-50 cursor-not-allowed'
+            'border-[var(--color-accent-secondary)] ring-2 ring-[var(--color-accent-secondary)]/20 bg-[var(--color-surface-secondary)]',
+          disabled && 'opacity-50 cursor-not-allowed bg-[var(--color-surface-elevated)]'
         )}
-        style={{ colorScheme: 'light' }}
+        aria-describedby={error ? `${labelId}-error` : helper ? `${labelId}-helper` : undefined}
+        aria-invalid={!!error}
         {...rest}
       />
-      {error && <p className="mt-1 text-sm text-[var(--color-red-completion)]">{error}</p>}
-      {helper && !error && <p className="mt-1 text-sm text-[var(--color-gray-400)]">{helper}</p>}
+      {error && (
+        <p id={`${labelId}-error`} className="mt-1 text-sm text-[var(--color-accent-secondary)]">
+          {error}
+        </p>
+      )}
+      {helper && !error && (
+        <p id={`${labelId}-helper`} className="mt-1 text-sm text-[var(--color-text-muted)]">
+          {helper}
+        </p>
+      )}
     </div>
   );
 }
