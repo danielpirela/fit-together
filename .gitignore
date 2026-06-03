@@ -31,3 +31,5 @@ coverage/
 
 # PWA
 dev-dist/
+# Local Pi runtime state
+.atl/
